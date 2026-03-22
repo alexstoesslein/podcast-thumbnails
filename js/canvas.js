@@ -119,9 +119,9 @@ const ThumbnailRenderer = {
         }
         // Default: draw programmatic guide overlay matching the Hotel Matze head-positioning template
         const rx = Math.round(W * 0.14);
-        const ry = Math.round(H * 0.02);
+        const ry = Math.round(H * 0.05);
         const rw = Math.round(W * 0.72);
-        const rh = Math.round(H * 0.54);
+        const rh = Math.round(H * 0.50);
         // Draw 4 white strips around the head zone (leaving the zone visible)
         ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
         ctx.fillRect(0, 0, W, ry);                        // top

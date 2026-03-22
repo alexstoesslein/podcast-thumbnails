@@ -187,6 +187,11 @@ document.addEventListener('DOMContentLoaded', () => {
             ? allText.toLowerCase().replace(/[^a-z0-9äöüß]+/g, '_').replace(/^_|_$/g, '') + '.png'
             : 'thumbnail.png';
 
+        // Temporarily hide overlay for export
+        const wasShowing = state.showOverlay;
+        state.showOverlay = false;
+        ThumbnailRenderer.render(state);
+
         canvas.toBlob((blob) => {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -194,6 +199,9 @@ document.addEventListener('DOMContentLoaded', () => {
             a.download = filename;
             a.click();
             URL.revokeObjectURL(url);
+            // Restore overlay
+            state.showOverlay = wasShowing;
+            ThumbnailRenderer.render(state);
         }, 'image/png');
     });
 
