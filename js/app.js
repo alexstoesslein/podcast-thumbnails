@@ -180,8 +180,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Offset to center face on frame
-            const bgX = Math.round(frameCX - (W - drawW) / 2 - faceCX * (drawW / imgW));
-            const bgY = Math.round(frameCY - (H - drawH) / 2 - faceCY * (drawH / imgH));
+            let bgX = Math.round(frameCX - (W - drawW) / 2 - faceCX * (drawW / imgW));
+            let bgY = Math.round(frameCY - (H - drawH) / 2 - faceCY * (drawH / imgH));
+
+            // Clamp: image must not show black edges (offsetY <= 0, offsetX <= 0)
+            const maxBgY = Math.round((drawH - H) / 2);  // offsetY = 0 at this value
+            const maxBgX = Math.round((drawW - W) / 2);
+            bgY = Math.min(bgY, maxBgY);
+            bgX = Math.min(bgX, maxBgX);
 
             state.bg.zoom = Math.round(zoom);
             state.bg.x = bgX;
