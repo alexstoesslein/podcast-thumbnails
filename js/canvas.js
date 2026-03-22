@@ -141,7 +141,7 @@ const ThumbnailRenderer = {
         const scale = (logoConfig.scale || 30) / 100;
         const logoW = logo.width * scale;
         const logoH = logo.height * scale;
-        const yPct = logoConfig.y || 90;
+        const yPct = logoConfig.y != null ? logoConfig.y : 90;
         const logoX = (W - logoW) / 2;
         const logoY = H * (yPct / 100) - logoH / 2;
         ctx.drawImage(logo, logoX, logoY, logoW, logoH);
