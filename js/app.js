@@ -109,6 +109,80 @@ document.addEventListener('DOMContentLoaded', () => {
         reader.readAsDataURL(file);
     }
 
+    // --- Auto-Position ---
+    document.getElementById('auto-position-btn').addEventListener('click', async () => {
+        if (!state.bgImage) { alert('Bitte zuerst ein Hintergrundbild laden.'); return; }
+        if (!window.FaceDetector) {
+            alert('Face Detection wird von diesem Browser nicht unterstützt. Bitte Chrome oder Edge verwenden.');
+            return;
+        }
+        const btn = document.getElementById('auto-position-btn');
+        btn.textContent = 'Erkenne Gesicht…';
+        btn.disabled = true;
+        try {
+            const detector = new FaceDetector({ fastMode: false, maxDetectedFaces: 1 });
+            const faces = await detector.detect(state.bgImage);
+            if (faces.length === 0) { alert('Kein Gesicht erkannt.'); return; }
+
+            const face = faces[0];
+            const { x: fx, y: fy, width: fw, height: fh } = face.boundingBox;
+            const faceCX = fx + fw / 2;
+            const faceCY = fy + fh / 2;
+
+            const W = ThumbnailRenderer.W, H = ThumbnailRenderer.H;
+            const imgW = state.bgImage.width, imgH = state.bgImage.height;
+            const imgRatio = imgW / imgH;
+            const canvasRatio = W / H;
+
+            // Overlay frame (must match canvas.js values)
+            const rx = Math.round(W * 0.14);
+            const ry = Math.round(H * 0.05);
+            const rw = Math.round(W * 0.72);
+            const rh = Math.round(H * 0.50);
+            const frameCX = rx + rw / 2;
+            const frameCY = ry + rh / 2;
+
+            // Size face to 75% of frame height
+            const targetFaceH = rh * 0.75;
+            const scalePixel = targetFaceH / fh;
+
+            // Calculate zoom
+            let zoom;
+            if (imgRatio > canvasRatio) {
+                zoom = (scalePixel * imgH / H) * 100;
+            } else {
+                zoom = (scalePixel * imgW / W) * 100;
+            }
+
+            // Calculate drawH/drawW at this zoom
+            let drawH, drawW;
+            if (imgRatio > canvasRatio) {
+                drawH = H * zoom / 100;
+                drawW = drawH * imgRatio;
+            } else {
+                drawW = W * zoom / 100;
+                drawH = drawW / imgRatio;
+            }
+
+            // Offset to center face on frame
+            const bgX = Math.round(frameCX - (W - drawW) / 2 - faceCX * (drawW / imgW));
+            const bgY = Math.round(frameCY - (H - drawH) / 2 - faceCY * (drawH / imgH));
+
+            state.bg.zoom = Math.round(zoom);
+            state.bg.x = bgX;
+            state.bg.y = bgY;
+            setSliderValue('bg-zoom', state.bg.zoom);
+            setSliderValue('bg-x', state.bg.x);
+            setSliderValue('bg-y', state.bg.y);
+            render();
+        } catch (e) {
+            alert('Fehler: ' + e.message);
+        } finally {
+            btn.textContent = 'Kopf auto-positionieren';
+            btn.disabled = false;
+        }
+    });
+
     // --- Overlay ---
     const overlayZone = document.getElementById('overlay-zone');
     const overlayUpload = document.getElementById('overlay-upload');

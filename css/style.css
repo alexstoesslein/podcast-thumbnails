@@ -159,3 +159,16 @@ input[type="checkbox"] {
 .export-btn:hover {
     background: #1d4ed8;
 }
+
+.secondary-btn {
+    padding: 8px 12px;
+    background: #374151;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.2s;
+}
+.secondary-btn:hover { background: #4b5563; }
+.secondary-btn:disabled { opacity: 0.5; cursor: not-allowed; }
