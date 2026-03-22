@@ -56,45 +56,77 @@ const ThumbnailRenderer = {
         const fontFamily = config.font || 'sans-serif';
         ctx.font = `bold ${fontSize}px ${fontFamily}, sans-serif`;
         ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
+        ctx.textBaseline = 'alphabetic';
 
         const line2 = (state.textLine2 || '').toUpperCase();
         const line1 = state.singleLine ? '' : (state.textLine1 || '').toUpperCase();
 
-        const textWidth = ctx.measureText(line2).width;
+        const metrics = ctx.measureText(line2);
+        const textWidth = metrics.width;
         const barPadding = state.bar.padding || 40;
         const barWidth = textWidth + barPadding * 2;
+
+        // Use actual glyph bounds for precise vertical centering of uppercase text
+        const ascent = metrics.actualBoundingBoxAscent;
+        const descent = metrics.actualBoundingBoxDescent;
+        const textH = ascent + descent;
 
         const textYPct = state.text.y || 50;
         const barCenterY = H * (textYPct / 100);
 
-        if (state.barImage && line2) {
-            const barImg = state.barImage;
-            const barH = fontSize * 1.5;
-            const barX = (W - barWidth) / 2;
-            const barY = barCenterY - barH / 2;
-            ctx.drawImage(barImg, barX, barY, barWidth, barH);
+        // Text baseline position so glyphs are visually centered at barCenterY
+        const textBaselineY = barCenterY + textH / 2 - descent;
+
+        // Draw bar — fixed height, width adapts to text
+        if (line2) {
+            if (config.barType === 'image' && state.barImage) {
+                const barH = textH + fontSize * 0.65;
+                const barX = (W - barWidth) / 2;
+                const barY = barCenterY - barH / 2;
+                ctx.drawImage(state.barImage, barX, barY, barWidth, barH);
+            } else if (config.barType === 'roundedRect') {
+                const barH = textH + fontSize * 0.6;
+                const r = config.barRadius || 20;
+                const barX = (W - barWidth) / 2;
+                const barY = barCenterY - barH / 2;
+                ctx.fillStyle = config.barColor || '#FFF';
+                ctx.beginPath();
+                ctx.roundRect(barX, barY, barWidth, barH, r);
+                ctx.fill();
+            }
         }
 
+        // Draw bar text — precisely centered, no shadow
         if (line2) {
             ctx.fillStyle = config.barTextColor || '#000';
-            ctx.fillText(line2, W / 2, barCenterY);
+            ctx.fillText(line2, W / 2, textBaselineY);
         }
 
+        // Draw upper line — position above bar, with text stroke
         if (line1) {
-            const lineSpacing = fontSize * 1.4;
+            const barH = line2 ? (textH + fontSize * 0.65) : 0;
+            const lineGap = fontSize * 0.3;
+            const line1Y = barCenterY - barH / 2 - lineGap;
+            ctx.textBaseline = 'alphabetic';
+            // Stroke outline
+            ctx.lineWidth = fontSize * 0.12;
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = '#000000';
+            ctx.strokeText(line1, W / 2, line1Y);
+            // Fill
             ctx.fillStyle = config.textColor || '#FFF';
-            ctx.fillText(line1, W / 2, barCenterY - lineSpacing);
+            ctx.fillText(line1, W / 2, line1Y);
         }
     },
 
     _drawLogo(ctx, state, W, H) {
         if (!state.logoImage) return;
         const logo = state.logoImage;
-        const scale = (state.logo.scale || 100) / 100;
+        const logoConfig = state.config.logoPos || { y: 90, scale: 30 };
+        const scale = (logoConfig.scale || 30) / 100;
         const logoW = logo.width * scale;
         const logoH = logo.height * scale;
-        const yPct = state.logo.y || 88;
+        const yPct = logoConfig.y || 90;
         const logoX = (W - logoW) / 2;
         const logoY = H * (yPct / 100) - logoH / 2;
         ctx.drawImage(logo, logoX, logoY, logoW, logoH);

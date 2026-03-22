@@ -12,8 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         singleLine: false,
         bg: { x: 0, y: 0, zoom: 100 },
         text: { y: 50, fontSize: 80 },
-        bar: { padding: 40 },
-        logo: { y: 88, scale: 100 }
+        bar: { padding: 40 }
     };
 
     function loadImage(src) {
@@ -44,19 +43,20 @@ document.addEventListener('DOMContentLoaded', () => {
         Object.assign(state.bg, defaults.bg);
         Object.assign(state.text, defaults.text);
         Object.assign(state.bar, defaults.bar);
-        Object.assign(state.logo, defaults.logo);
 
         setSliderValue('bg-x', defaults.bg.x);
         setSliderValue('bg-y', defaults.bg.y);
         setSliderValue('bg-zoom', defaults.bg.zoom);
         setSliderValue('text-y', defaults.text.y);
         setSliderValue('text-size', defaults.text.fontSize);
-        setSliderValue('logo-y', defaults.logo.y);
-        setSliderValue('logo-scale', defaults.logo.scale);
 
-        try { state.barImage = await loadImage(state.config.bar); }
-        catch (e) { state.barImage = null; }
-        try { state.logoImage = await loadImage(state.config.logo); }
+        if (state.config.barSrc) {
+            try { state.barImage = await loadImage(state.config.barSrc); }
+            catch (e) { state.barImage = null; }
+        } else {
+            state.barImage = null;
+        }
+        try { state.logoImage = await loadImage(state.config.logoSrc); }
         catch (e) { state.logoImage = null; }
 
         await ThumbnailRenderer.ensureFontsLoaded();
@@ -145,9 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
     wireSlider('bg-zoom', state.bg, 'zoom');
     wireSlider('text-y', state.text, 'y');
     wireSlider('text-size', state.text, 'fontSize');
-    wireSlider('logo-y', state.logo, 'y');
-    wireSlider('logo-scale', state.logo, 'scale');
-
     // --- Export ---
     document.getElementById('export-btn').addEventListener('click', () => {
         const allText = [state.textLine1, state.textLine2].filter(Boolean).join(' ');

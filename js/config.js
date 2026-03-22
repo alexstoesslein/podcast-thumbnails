@@ -2,31 +2,34 @@ const PODCAST_CONFIGS = [
     {
         id: 'hotel-matze',
         name: 'Hotel Matze',
-        logo: 'assets/hotel-matze/logo.png',
-        bar: 'assets/hotel-matze/bar.png',
-        font: 'HotelMatzeFont',
+        logoSrc: 'assets/hotel-matze/logo.png',
+        barSrc: 'assets/hotel-matze/bar.png',
+        barType: 'image',
+        font: 'OpenSansCondensed',
         textColor: '#FFFFFF',
         barTextColor: '#000000',
+        logoPos: { y: 90, scale: 25 },
         defaults: {
             bg: { x: 0, y: 0, zoom: 100 },
-            text: { y: 50, fontSize: 80 },
-            bar: { padding: 40 },
-            logo: { y: 88, scale: 100 }
+            text: { y: 60, fontSize: 80 },
+            bar: { padding: 40 }
         }
     },
     {
         id: '50-ueber-50',
         name: '50 über 50',
-        logo: 'assets/50-ueber-50/logo.png',
-        bar: 'assets/50-ueber-50/bar.png',
-        font: '50ueber50Font',
+        logoSrc: 'assets/50-ueber-50/logo.png',
+        barType: 'roundedRect',
+        barColor: '#FFFFFF',
+        barRadius: 25,
+        font: 'AvenirBlack',
         textColor: '#E30613',
         barTextColor: '#E30613',
+        logoPos: { y: 80, scale: 150 },
         defaults: {
             bg: { x: 0, y: 0, zoom: 100 },
-            text: { y: 50, fontSize: 70 },
-            bar: { padding: 50 },
-            logo: { y: 88, scale: 100 }
+            text: { y: 55, fontSize: 70 },
+            bar: { padding: 50 }
         }
     }
 ];

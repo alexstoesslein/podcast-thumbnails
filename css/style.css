@@ -1,14 +1,14 @@
 @font-face {
-    font-family: 'HotelMatzeFont';
-    src: url('../assets/fonts/hotel-matze-font.woff2') format('woff2');
+    font-family: 'OpenSansCondensed';
+    src: url('../assets/fonts/OpenSans-CondBold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
-    font-family: '50ueber50Font';
-    src: url('../assets/fonts/50-ueber-50-font.woff2') format('woff2');
-    font-weight: bold;
+    font-family: 'AvenirBlack';
+    src: url('../assets/fonts/Avenir-Black.woff2') format('woff2');
+    font-weight: 900;
     font-style: normal;
 }
 
