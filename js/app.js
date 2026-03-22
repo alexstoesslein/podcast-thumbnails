@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Auto-Position ---
-    const FACE_MODEL_URL = 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights';
+    const FACE_MODEL_URL = 'models';
     let faceModelLoaded = false;
 
     document.getElementById('auto-position-btn').addEventListener('click', async () => {
