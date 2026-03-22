@@ -29,11 +29,11 @@ const PODCAST_CONFIGS = [
         barTextColor: '#E30613',
         strokeColor: '#FFFFFF',
         strokeWidth: 0.07,
-        logoPos: { y: 79, scale: 120 },
+        logoPos: { y: 75, scale: 145 },
         defaults: {
             bg: { x: 0, y: 0, zoom: 100 },
             text: { y: 58.5, fontSize: 55 },
-            bar: { padding: 50 }
+            bar: { padding: 25 }
         }
     }
 ];
