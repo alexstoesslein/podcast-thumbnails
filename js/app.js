@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         singleLine: false,
         bg: { x: 0, y: 0, zoom: 100 },
         text: { y: 50, fontSize: 80 },
-        bar: { padding: 40 }
+        bar: { y: 60, padding: 40 }
     };
 
     function loadImage(src) {
@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setSliderValue('bg-y', defaults.bg.y);
         setSliderValue('bg-zoom', defaults.bg.zoom);
         setSliderValue('text-y', defaults.text.y);
+        setSliderValue('bar-y', defaults.bar.y);
         setSliderValue('text-size', defaults.text.fontSize);
 
         if (state.config.barSrc) {
@@ -144,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
     wireSlider('bg-y', state.bg, 'y');
     wireSlider('bg-zoom', state.bg, 'zoom');
     wireSlider('text-y', state.text, 'y');
+    wireSlider('bar-y', state.bar, 'y');
     wireSlider('text-size', state.text, 'fontSize');
     // --- Export ---
     document.getElementById('export-btn').addEventListener('click', () => {

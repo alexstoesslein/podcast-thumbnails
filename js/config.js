@@ -11,8 +11,8 @@ const PODCAST_CONFIGS = [
         logoPos: { y: 83, scale: 25 },
         defaults: {
             bg: { x: 0, y: 0, zoom: 100 },
-            text: { y: 67, fontSize: 110 },
-            bar: { padding: 40 }
+            text: { y: 57, fontSize: 110 },
+            bar: { y: 63, padding: 40 }
         }
     },
     {
@@ -29,7 +29,7 @@ const PODCAST_CONFIGS = [
         defaults: {
             bg: { x: 0, y: 0, zoom: 100 },
             text: { y: 55, fontSize: 70 },
-            bar: { padding: 50 }
+            bar: { y: 62, padding: 50 }
         }
     }
 ];
