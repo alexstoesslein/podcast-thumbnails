@@ -129,8 +129,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const face = detections[0].box;
             const { x: fx, y: fy, width: fw, height: fh } = face;
-            const faceCX = fx + fw / 2;
-            const faceCY = fy + fh / 2;
+
+            // Expand bounding box to cover full head (hair, forehead, chin, sides)
+            const padTop    = fh * 0.65;  // hair/forehead above face
+            const padBottom = fh * 0.15;  // chin below face
+            const padSide   = fw * 0.20;  // sides
+            const hx = Math.max(0, fx - padSide);
+            const hy = Math.max(0, fy - padTop);
+            const hw = fw + padSide * 2;
+            const hh = fh + padTop + padBottom;
+            const headCX = hx + hw / 2;
+            const headCY = hy + hh / 2;
 
             const W = ThumbnailRenderer.W, H = ThumbnailRenderer.H;
             const imgW = state.bgImage.width, imgH = state.bgImage.height;
@@ -145,9 +154,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const frameCX = rx + rw / 2;
             const frameCY = ry + rh / 2;
 
-            // Size face to 75% of frame height
-            const targetFaceH = rh * 0.75;
-            const scalePixel = targetFaceH / fh;
+            // Size head box to fill 90% of frame (with margin)
+            const targetFaceH = rh * 0.90;
+            const scalePixel = targetFaceH / hh;
+            // Use head center instead of face center
+            const faceCX = headCX;
+            const faceCY = headCY;
 
             // Calculate zoom
             let zoom;
