@@ -110,22 +110,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Auto-Position ---
+    const FACE_MODEL_URL = 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights';
+    let faceModelLoaded = false;
+
     document.getElementById('auto-position-btn').addEventListener('click', async () => {
         if (!state.bgImage) { alert('Bitte zuerst ein Hintergrundbild laden.'); return; }
-        if (!window.FaceDetector) {
-            alert('Face Detection wird von diesem Browser nicht unterstützt. Bitte Chrome oder Edge verwenden.');
-            return;
-        }
         const btn = document.getElementById('auto-position-btn');
-        btn.textContent = 'Erkenne Gesicht…';
+        btn.textContent = 'Lade Modell…';
         btn.disabled = true;
         try {
-            const detector = new FaceDetector({ fastMode: false, maxDetectedFaces: 1 });
-            const faces = await detector.detect(state.bgImage);
-            if (faces.length === 0) { alert('Kein Gesicht erkannt.'); return; }
+            if (!faceModelLoaded) {
+                await faceapi.nets.tinyFaceDetector.loadFromUri(FACE_MODEL_URL);
+                faceModelLoaded = true;
+            }
+            btn.textContent = 'Erkenne Gesicht…';
+            const detections = await faceapi.detectAllFaces(state.bgImage, new faceapi.TinyFaceDetectorOptions({ scoreThreshold: 0.3 }));
+            if (detections.length === 0) { alert('Kein Gesicht erkannt.'); return; }
 
-            const face = faces[0];
-            const { x: fx, y: fy, width: fw, height: fh } = face.boundingBox;
+            const face = detections[0].box;
+            const { x: fx, y: fy, width: fw, height: fh } = face;
             const faceCX = fx + fw / 2;
             const faceCY = fy + fh / 2;
 
