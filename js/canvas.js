@@ -61,61 +61,58 @@ const ThumbnailRenderer = {
         const line2 = (state.textLine2 || '').toUpperCase();
         const line1 = state.singleLine ? '' : (state.textLine1 || '').toUpperCase();
 
-        const metrics = ctx.measureText(line2);
-        const textWidth = metrics.width;
-        const barPadding = state.bar.padding || 40;
-        const barWidth = textWidth + barPadding * 2;
+        // Measure line1 and line2 separately
+        const m1 = ctx.measureText(line1 || line2 || 'A');
+        const m2 = ctx.measureText(line2 || 'A');
+        const ascent1 = m1.actualBoundingBoxAscent;
+        const descent1 = m1.actualBoundingBoxDescent;
+        const ascent2 = m2.actualBoundingBoxAscent;
+        const descent2 = m2.actualBoundingBoxDescent;
+        const textH2 = ascent2 + descent2;
 
-        // Use actual glyph bounds for precise vertical centering of uppercase text
-        const ascent = metrics.actualBoundingBoxAscent;
-        const descent = metrics.actualBoundingBoxDescent;
-        const textH = ascent + descent;
-
+        // text.y always controls line1 baseline (or bar center if single line)
         const textYPct = state.text.y || 50;
-        const barCenterY = H * (textYPct / 100);
+        const line1BaselineY = H * (textYPct / 100);
 
-        // Text baseline position so glyphs are visually centered at barCenterY
-        const textBaselineY = barCenterY + textH / 2 - descent;
+        // Bar sits directly below line1 with tiny gap
+        const lineGap = fontSize * 0.04;
+        const barH = textH2 + fontSize * 0.65;
+        const barTop = line1 ? line1BaselineY + descent1 + lineGap : line1BaselineY - barH / 2;
+        const barCenterY = barTop + barH / 2;
+        const textBaselineY = barCenterY + (ascent2 - descent2) / 2;
 
-        // Draw bar — fixed height, width adapts to text
+        // Draw bar
+        const barPadding = state.bar.padding || 40;
+        const barWidth = m2.width + barPadding * 2;
+
         if (line2) {
             if (config.barType === 'image' && state.barImage) {
-                const barH = textH + fontSize * 0.65;
                 const barX = (W - barWidth) / 2;
-                const barY = barCenterY - barH / 2;
-                ctx.drawImage(state.barImage, barX, barY, barWidth, barH);
+                ctx.drawImage(state.barImage, barX, barTop, barWidth, barH);
             } else if (config.barType === 'roundedRect') {
-                const barH = textH + fontSize * 0.6;
                 const r = config.barRadius || 20;
                 const barX = (W - barWidth) / 2;
-                const barY = barCenterY - barH / 2;
                 ctx.fillStyle = config.barColor || '#FFF';
                 ctx.beginPath();
-                ctx.roundRect(barX, barY, barWidth, barH, r);
+                ctx.roundRect(barX, barTop, barWidth, barH, r);
                 ctx.fill();
             }
         }
 
-        // Draw bar text — precisely centered, no shadow
+        // Draw bar text (line2) — centered in bar, no stroke
         if (line2) {
             ctx.fillStyle = config.barTextColor || '#000';
             ctx.fillText(line2, W / 2, textBaselineY);
         }
 
-        // Draw upper line — position above bar, with text stroke
+        // Draw line1 — at fixed text.y position, with stroke
         if (line1) {
-            const barH = line2 ? (textH + fontSize * 0.65) : 0;
-            const lineGap = fontSize * 0.04;
-            const line1Y = barCenterY - barH / 2 - lineGap;
-            ctx.textBaseline = 'alphabetic';
-            // Stroke outline
             ctx.lineWidth = fontSize * 0.12;
             ctx.lineJoin = 'round';
             ctx.strokeStyle = '#000000';
-            ctx.strokeText(line1, W / 2, line1Y);
-            // Fill
+            ctx.strokeText(line1, W / 2, line1BaselineY);
             ctx.fillStyle = config.textColor || '#FFF';
-            ctx.fillText(line1, W / 2, line1Y);
+            ctx.fillText(line1, W / 2, line1BaselineY);
         }
     },
 
