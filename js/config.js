@@ -8,10 +8,10 @@ const PODCAST_CONFIGS = [
         font: 'OpenSansCondensed',
         textColor: '#FFFFFF',
         barTextColor: '#000000',
-        logoPos: { y: 90, scale: 25 },
+        logoPos: { y: 83, scale: 25 },
         defaults: {
             bg: { x: 0, y: 0, zoom: 100 },
-            text: { y: 60, fontSize: 80 },
+            text: { y: 56, fontSize: 80 },
             bar: { padding: 40 }
         }
     },
