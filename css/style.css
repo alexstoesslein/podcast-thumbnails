@@ -1,0 +1,147 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #1a1a1a;
+    color: #e0e0e0;
+    min-height: 100vh;
+}
+
+.app {
+    display: flex;
+    height: 100vh;
+}
+
+.preview-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: #111;
+}
+
+.preview-panel canvas {
+    max-height: 90vh;
+    max-width: 100%;
+    border: 1px solid #333;
+}
+
+.controls-panel {
+    width: 360px;
+    padding: 20px;
+    overflow-y: auto;
+    border-left: 1px solid #333;
+}
+
+.controls-panel h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.control-section {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #333;
+}
+
+.control-section > label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #aaa;
+}
+
+select, input[type="text"] {
+    width: 100%;
+    padding: 8px 10px;
+    background: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #e0e0e0;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.upload-zone {
+    border: 2px dashed #555;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.upload-zone:hover, .upload-zone.dragover {
+    border-color: #888;
+}
+
+.upload-zone.has-image {
+    border-color: #2563eb;
+    border-style: solid;
+}
+
+.upload-zone.has-image p {
+    color: #2563eb;
+}
+
+.upload-zone p {
+    color: #888;
+    font-size: 14px;
+}
+
+.slider-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.slider-row span {
+    width: 50px;
+    font-size: 12px;
+    color: #888;
+}
+
+.slider-row input[type="range"] {
+    flex: 1;
+}
+
+.slider-row input[type="number"] {
+    width: 60px;
+    padding: 4px 6px;
+    background: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #e0e0e0;
+    font-size: 12px;
+    text-align: center;
+}
+
+input[type="checkbox"] {
+    margin-right: 6px;
+}
+
+.export-btn {
+    width: 100%;
+    padding: 12px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.export-btn:hover {
+    background: #1d4ed8;
+}

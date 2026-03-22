@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Podcast Thumbnail Creator</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app">
+        <div class="preview-panel">
+            <canvas id="thumbnail-canvas" width="1080" height="1920"></canvas>
+        </div>
+        <div class="controls-panel">
+            <h2>Thumbnail Creator</h2>
+
+            <section class="control-section">
+                <label>Podcast</label>
+                <select id="podcast-select"></select>
+            </section>
+
+            <section class="control-section">
+                <label>Hintergrundbild</label>
+                <div class="upload-zone" id="upload-zone">
+                    <p>Bild hierher ziehen oder klicken</p>
+                    <input type="file" id="bg-upload" accept="image/*" hidden>
+                </div>
+            </section>
+
+            <section class="control-section">
+                <label>
+                    <input type="checkbox" id="single-line"> Nur 1 Zeile
+                </label>
+                <div id="line1-group">
+                    <label>Obere Zeile</label>
+                    <input type="text" id="text-line1" placeholder="RAUS AUS">
+                </div>
+                <div>
+                    <label>Zeile im Balken</label>
+                    <input type="text" id="text-line2" placeholder="DEM LOCH">
+                </div>
+            </section>
+
+            <section class="control-section">
+                <label>Hintergrund</label>
+                <div class="slider-row">
+                    <span>X</span>
+                    <input type="range" id="bg-x" min="-500" max="500" value="0">
+                    <input type="number" id="bg-x-num" value="0">
+                </div>
+                <div class="slider-row">
+                    <span>Y</span>
+                    <input type="range" id="bg-y" min="-500" max="500" value="0">
+                    <input type="number" id="bg-y-num" value="0">
+                </div>
+                <div class="slider-row">
+                    <span>Zoom</span>
+                    <input type="range" id="bg-zoom" min="50" max="200" value="100">
+                    <input type="number" id="bg-zoom-num" value="100">
+                </div>
+            </section>
+
+            <section class="control-section">
+                <label>Text</label>
+                <div class="slider-row">
+                    <span>Y-Pos</span>
+                    <input type="range" id="text-y" min="10" max="90" value="50">
+                    <input type="number" id="text-y-num" value="50">
+                </div>
+                <div class="slider-row">
+                    <span>Groesse</span>
+                    <input type="range" id="text-size" min="30" max="150" value="80">
+                    <input type="number" id="text-size-num" value="80">
+                </div>
+            </section>
+
+            <section class="control-section">
+                <label>Logo</label>
+                <div class="slider-row">
+                    <span>Y-Pos</span>
+                    <input type="range" id="logo-y" min="50" max="98" value="88">
+                    <input type="number" id="logo-y-num" value="88">
+                </div>
+                <div class="slider-row">
+                    <span>Groesse</span>
+                    <input type="range" id="logo-scale" min="20" max="200" value="100">
+                    <input type="number" id="logo-scale-num" value="100">
+                </div>
+            </section>
+
+            <section class="control-section">
+                <button id="export-btn" class="export-btn">PNG exportieren</button>
+            </section>
+        </div>
+    </div>
+    <script src="js/config.js"></script>
+    <script src="js/canvas.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
