@@ -29,7 +29,7 @@ const PODCAST_CONFIGS = [
         barTextColor: '#E30613',
         strokeColor: '#FFFFFF',
         strokeWidth: 0.07,
-        logoPos: { y: 87, scale: 145 },
+        logoPos: { y: 86, scale: 145 },
         defaults: {
             bg: { x: 0, y: 0, zoom: 100 },
             text: { y: 58.5, fontSize: 55 },
