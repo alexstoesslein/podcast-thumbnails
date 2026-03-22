@@ -61,18 +61,11 @@ const ThumbnailRenderer = {
         const line2 = (state.textLine2 || '').toUpperCase();
         const line1 = state.singleLine ? '' : (state.textLine1 || '').toUpperCase();
 
-        // --- Line 1: completely independent Y position ---
-        if (line1) {
-            const line1Y = H * ((state.text.y || 50) / 100);
-            ctx.lineWidth = fontSize * 0.12;
-            ctx.lineJoin = 'round';
-            ctx.strokeStyle = '#000000';
-            ctx.strokeText(line1, W / 2, line1Y);
-            ctx.fillStyle = config.textColor || '#FFF';
-            ctx.fillText(line1, W / 2, line1Y);
-        }
+        // Bar center is controlled by text.y — line1 sits directly above it
+        const barCenterY = H * ((state.text.y || 58) / 100);
 
-        // --- Bar + Line 2: completely independent Y position ---
+        // --- Bar + Line 2 ---
+        let barTop = barCenterY;
         if (line2) {
             const m2 = ctx.measureText(line2);
             const ascent2 = m2.actualBoundingBoxAscent;
@@ -81,9 +74,7 @@ const ThumbnailRenderer = {
             const barH = textH2 + fontSize * 0.65;
             const barPadding = state.bar.padding || 40;
             const barWidth = m2.width + barPadding * 2;
-            const barCenterY = H * ((state.bar.y || 60) / 100);
-            const barTop = barCenterY - barH / 2;
-            // Visually center text in bar using actual glyph bounds
+            barTop = barCenterY - barH / 2;
             const textBaselineY = barCenterY + (ascent2 - descent2) / 2;
 
             if (config.barType === 'image' && state.barImage) {
@@ -100,6 +91,21 @@ const ThumbnailRenderer = {
 
             ctx.fillStyle = config.barTextColor || '#000';
             ctx.fillText(line2, W / 2, textBaselineY);
+        }
+
+        // --- Line 1: always directly above bar, fixed gap ---
+        if (line1) {
+            const LINE_GAP = 8;
+            const m1 = ctx.measureText(line1);
+            const descent1 = m1.actualBoundingBoxDescent;
+            const line1Y = barTop - LINE_GAP - descent1;
+
+            ctx.lineWidth = fontSize * 0.12;
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = '#000000';
+            ctx.strokeText(line1, W / 2, line1Y);
+            ctx.fillStyle = config.textColor || '#FFF';
+            ctx.fillText(line1, W / 2, line1Y);
         }
     },
 
