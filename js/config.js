@@ -8,6 +8,8 @@ const PODCAST_CONFIGS = [
         font: 'OpenSansCondensed',
         textColor: '#FFFFFF',
         barTextColor: '#000000',
+        strokeColor: '#000000',
+        strokeWidth: 0.17,
         logoPos: { y: 83, scale: 25 },
         defaults: {
             bg: { x: 0, y: 0, zoom: 100 },
@@ -25,10 +27,12 @@ const PODCAST_CONFIGS = [
         font: 'AvenirBlack',
         textColor: '#E30613',
         barTextColor: '#E30613',
-        logoPos: { y: 87, scale: 80 },
+        strokeColor: '#FFFFFF',
+        strokeWidth: 0.07,
+        logoPos: { y: 79, scale: 120 },
         defaults: {
             bg: { x: 0, y: 0, zoom: 100 },
-            text: { y: 60, fontSize: 55 },
+            text: { y: 58.5, fontSize: 55 },
             bar: { padding: 50 }
         }
     }

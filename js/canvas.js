@@ -101,9 +101,9 @@ const ThumbnailRenderer = {
             const descent1 = m1.actualBoundingBoxDescent;
             const line1Y = barTop - LINE_GAP - descent1;
 
-            ctx.lineWidth = fontSize * 0.17;
+            ctx.lineWidth = fontSize * (config.strokeWidth || 0.17);
             ctx.lineJoin = 'round';
-            ctx.strokeStyle = '#000000';
+            ctx.strokeStyle = config.strokeColor || '#000000';
             ctx.strokeText(line1, W / 2, line1Y);
             ctx.fillStyle = config.textColor || '#FFF';
             ctx.fillText(line1, W / 2, line1Y);
