@@ -105,7 +105,7 @@ const ThumbnailRenderer = {
         // Draw upper line — position above bar, with text stroke
         if (line1) {
             const barH = line2 ? (textH + fontSize * 0.65) : 0;
-            const lineGap = fontSize * 0.3;
+            const lineGap = fontSize * 0.04;
             const line1Y = barCenterY - barH / 2 - lineGap;
             ctx.textBaseline = 'alphabetic';
             // Stroke outline
