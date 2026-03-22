@@ -27,6 +27,7 @@ const ThumbnailRenderer = {
         this._drawBackground(ctx, state, W, H);
         this._drawBarAndText(ctx, state, W, H);
         this._drawLogo(ctx, state, W, H);
+        this._drawOverlay(ctx, state, W, H);
     },
 
     _drawBackground(ctx, state, W, H) {
@@ -107,6 +108,30 @@ const ThumbnailRenderer = {
             ctx.fillStyle = config.textColor || '#FFF';
             ctx.fillText(line1, W / 2, line1Y);
         }
+    },
+
+    _drawOverlay(ctx, state, W, H) {
+        if (!state.showOverlay) return;
+        // If a custom overlay image was uploaded, use it
+        if (state.overlayImage) {
+            ctx.drawImage(state.overlayImage, 0, 0, W, H);
+            return;
+        }
+        // Default: draw programmatic guide overlay matching the Hotel Matze head-positioning template
+        const rx = Math.round(W * 0.14);
+        const ry = Math.round(H * 0.02);
+        const rw = Math.round(W * 0.72);
+        const rh = Math.round(H * 0.54);
+        // Draw 4 white strips around the head zone (leaving the zone visible)
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+        ctx.fillRect(0, 0, W, ry);                        // top
+        ctx.fillRect(0, ry, rx, rh);                      // left
+        ctx.fillRect(rx + rw, ry, W - rx - rw, rh);       // right
+        ctx.fillRect(0, ry + rh, W, H - ry - rh);         // bottom
+        // Border around head zone
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 6;
+        ctx.strokeRect(rx, ry, rw, rh);
     },
 
     _drawLogo(ctx, state, W, H) {

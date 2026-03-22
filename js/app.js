@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
         bgImage: null,
         barImage: null,
         logoImage: null,
+        overlayImage: null,
+        showOverlay: true,
         textLine1: '',
         textLine2: '',
         singleLine: false,
@@ -106,6 +108,39 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         reader.readAsDataURL(file);
     }
+
+    // --- Overlay ---
+    const overlayZone = document.getElementById('overlay-zone');
+    const overlayUpload = document.getElementById('overlay-upload');
+    overlayZone.addEventListener('click', () => overlayUpload.click());
+    overlayZone.addEventListener('dragover', (e) => { e.preventDefault(); overlayZone.classList.add('dragover'); });
+    overlayZone.addEventListener('dragleave', () => overlayZone.classList.remove('dragover'));
+    overlayZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        overlayZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) handleOverlayFile(e.dataTransfer.files[0]);
+    });
+    overlayUpload.addEventListener('change', (e) => {
+        if (e.target.files.length) handleOverlayFile(e.target.files[0]);
+    });
+    function handleOverlayFile(file) {
+        if (!file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                state.overlayImage = img;
+                overlayZone.querySelector('p').textContent = file.name;
+                render();
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+    document.getElementById('overlay-toggle').addEventListener('change', (e) => {
+        state.showOverlay = e.target.checked;
+        render();
+    });
 
     // --- Text Inputs ---
     document.getElementById('text-line1').addEventListener('input', (e) => {
