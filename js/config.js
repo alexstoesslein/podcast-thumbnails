@@ -25,10 +25,10 @@ const PODCAST_CONFIGS = [
         barColor: '#FFFFFF',
         barRadius: 25,
         font: 'AvenirBlack',
-        textColor: '#E30613',
+        textColor: '#FFFFFF',
         barTextColor: '#E30613',
         strokeColor: '#FFFFFF',
-        strokeWidth: 0.07,
+        strokeWidth: 0,
         logoPos: { y: 83, scale: 145 },
         defaults: {
             bg: { x: 0, y: 0, zoom: 100 },
