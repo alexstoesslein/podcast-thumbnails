@@ -11,7 +11,10 @@ const ThumbnailRenderer = {
 
     async ensureFontsLoaded() {
         if (document.fonts) {
-            await document.fonts.ready;
+            await Promise.all([
+                document.fonts.load('bold 72px OpenSansCondensed'),
+                document.fonts.load('900 72px AvenirBlack')
+            ]);
         }
     },
 
